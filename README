@@ -1,0 +1,5 @@
+
+depends heavily on my chef-soloclient helpers.
+
+probably needs to be updated for the most recent version of icinga, and needs a LOT of cleanup.
+
