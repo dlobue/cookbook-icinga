@@ -1,0 +1,6 @@
+icinga-cgi	icinga/adminpassword-repeat	password	
+# Icinga web administration password:
+icinga-cgi	icinga/adminpassword	password	
+icinga-cgi	icinga/adminpassword-mismatch	error	
+# Apache servers to configure for icinga:
+icinga-cgi	icinga/httpd	multiselect	apache2

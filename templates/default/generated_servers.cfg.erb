@@ -1,0 +1,43 @@
+
+define hostgroup {
+    hostgroup_name generated-servers
+    alias generated-servers
+}
+
+<%
+    @servers.each { |s| @hostgroups.merge( [s[:persist][:traits], s[:persist][:deployment]].flatten ) }
+    @hostgroups.each do |hostgroup|
+%>
+define hostgroup {
+    hostgroup_name <%=hostgroup%>-servers
+    alias <%=hostgroup%>-servers
+}
+
+<% end %>
+
+define host {
+    name generated-server
+    use generic-host
+    hostgroups generated-servers
+    check_command clio_check_server_alive!1!5
+    register 0
+}
+
+<% @servers.each do |server| %>
+
+define host {
+    use generated-server
+    hostgroups generated-servers,<%=[server[:persist][:traits], server[:persist][:deployment]].flatten.map {|t| t + "-servers"}.join(',')%>
+    host_name <%=server[:persist][:fqdn]%>
+    alias <%=server[:persist][:fqdn]%>
+    address <%=server[:persist][:fqdn]%>
+    <%
+        server[:persist].to_hash.select { |k,v|
+            not [Hash,Array].any?{ |typ| v.kind_of? typ }
+        }.each do |key,value|
+    %>
+    _<%=key%> <%=value%>
+    <% end %>
+}
+<% end %>
+

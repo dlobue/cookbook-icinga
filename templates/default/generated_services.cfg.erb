@@ -1,0 +1,146 @@
+
+define service {
+    name generated-service
+    use generic-service
+    register 0
+
+    notification_interval 20
+    max_check_attempts 3
+    normal_check_interval 1
+    retry_check_interval 1
+}
+
+define service {
+    use generated-service
+    hostgroup_name generated-servers
+    service_description disk space used on all filesystems
+    check_command clio_check_all_fs!80!95
+}
+
+define service {
+    use generated-service
+    hostgroup_name generated-servers
+    service_description cpu usage
+    check_command clio_check_cpu!80!95
+}
+
+#define service {
+#    use generated-service
+#    hostgroup_name generated-servers
+#    service_description determine ssh banner exchange lag
+#    check_command clio_check_ssh_lag!1!5!3
+#}
+
+define service {
+    use generated-service
+    hostgroup_name generated-servers
+    service_description chef-solo process
+    check_command clio_check_process!1:!1:!chef-solo
+}
+
+define service {
+    use generated-service
+    hostgroup_name generated-servers
+    service_description splunk process
+    check_command clio_check_process!1:!1:!splunkd
+}
+
+
+#service specific
+define service {
+    use generated-service
+    hostgroup_name lupyne-servers
+    service_description lupyne process
+    check_command clio_check_process!1!1:!search.service!<%=node.deployment.lupyne_portlist.join(' ')%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name lupyne-servers,appdb-servers
+    service_description wand process
+    check_command clio_check_process!1!1:!wand.py!<%=node.deployment.wand_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name publish-servers
+    service_description tower process
+    check_command clio_check_process!1:!1:!tower/tower.py!<%=node.deployment.tower_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name publish-servers
+    service_description shindig process
+    check_command clio_check_process!1:!1:!shindig/shindig.py
+}
+
+define service {
+    use generated-service
+    hostgroup_name mongodb-servers
+    service_description mongodb process
+    check_command clio_check_process!1:!1:!mongod!<%=node.mongodb.port%> <%=node.deployment.lair_port%> <%=node.deployment.lycan_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name mongodb-servers
+    service_description mongodb replication lag
+    check_command clio_check_mongodb_repl!1!2
+    max_check_attempts 5
+}
+
+define service {
+    use generated-service
+    hostgroup_name gd-pdb-servers
+    service_description postgres replication lag
+    check_command clio_check_postgres_repl!10!30
+    max_check_attempts 5
+}
+
+define service {
+    use generated-service
+    hostgroup_name gd-fdx-servers
+    service_description fedex process
+    check_command clio_check_process!1:!1:!fedex/fedex.py!<%=node.geodeals.deployment.fedex_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name gd-img-servers
+    service_description imageserv process
+    check_command clio_check_process!1:!1:!imageserv/service.py!<%=node.geodeals.deployment.imageserv_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name appcache-servers,cb-memcached-servers
+    service_description memcached process
+    check_command clio_check_process!1:!1:!memcached!<%=node.deployment.appcache_port%> <%=node.cerberus.deployment.memcached_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name publish-servers,appdb-servers,minipax-servers,openpub-servers
+    service_description geoproxy process
+    check_command clio_check_process!1:!1:!haproxy!<%=
+    node.deployment.to_hash.select { |k,v|
+        k.to_s.end_with? "haproxy_port"
+    }.map { |k,v| v }.join(' ')
+    %>
+}
+
+define service {
+    use generated-service
+    hostgroup_name gd-app-servers
+    service_description pgproxy process
+    check_command clio_check_process!1:!1:!haproxy!<%=node.geodeals.deployment.pgproxy_write_port%> <%=node.geodeals.deployment.pgproxy_read_port%>
+}
+
+define service {
+    use generated-service
+    hostgroup_name clio-servers
+    service_description clio backend service process
+    check_command clio_check_process!1:!1:!clio.store:app!<%=node.clio.port%>
+}
+
