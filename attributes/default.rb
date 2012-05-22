@@ -5,6 +5,8 @@ default.icinga.cmd_dir = '/var/lib/icinga/rw'
 
 default.icinga.cmd_file = File.join(icinga.cmd_dir, 'icinga.cmd')
 
+default.icinga.contact_email = 'root@localhost'
+
 #these don't really go in the objects dir
 default.icinga.conf.icinga = File.join(icinga.conf_root_dir, 'icinga.cfg')
 default.icinga.conf.resource = File.join(icinga.conf_root_dir, 'resource.cfg')
