@@ -67,12 +67,14 @@ file File.join(node.icinga.conf_dir, 'localhost_icinga.cfg') do
 end
 
 service "icinga" do
-    action node.mongodb.ismaster ? [:start, :disable] : [:stop, :disable]
+    #action node.mongodb.ismaster ? [:start, :disable] : [:stop, :disable]
+    action [:start, :disable]
     supports :restart => true, :reload => true, :status => true
 end
 
 service "apache2" do
-    action node.mongodb.ismaster ? [:start, :disable] : [:stop, :disable]
+    #action node.mongodb.ismaster ? [:start, :disable] : [:stop, :disable]
+    action [:start, :disable]
     supports :restart => true, :reload => true, :status => true
 end
 
