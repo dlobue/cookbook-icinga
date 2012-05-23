@@ -2,9 +2,9 @@
 package "python-nagiosplugin"
 package "python-pyes"
 
-git node.icinga.custom_plugins_dir do
-    repository node.icinga.custom_plugins_repo
-    reference "master"
+git node.icinga.custom_plugins.dir do
+    repository node.icinga.custom_plugins.repo
+    revision node.icinga.custom_plugins.revision
     action [:checkout, :sync]
 end
 

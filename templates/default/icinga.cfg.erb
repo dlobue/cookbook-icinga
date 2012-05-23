@@ -24,7 +24,7 @@ cfg_file=/etc/icinga/commands.cfg
 # nagios-plugins package
 cfg_dir=/etc/nagios-plugins/config
 
-cfg_dir=<%=node.icinga.custom_plugins_dir%>/config
+cfg_dir=<%=node.icinga.custom_plugins.dir%>/config
 
 # Debian uses by default a configuration directory where icinga-common,
 # other packages and the local admin can dump or link configuration

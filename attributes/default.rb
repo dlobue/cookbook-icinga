@@ -17,8 +17,9 @@ default.icinga.conf.generated_servers = File.join(icinga.conf_dir, 'generated_se
 default.icinga.conf.generated_services = File.join(icinga.conf_dir, 'generated_services.cfg')
 default.icinga.conf.contacts = File.join(icinga.conf_dir, 'contacts_icinga.cfg')
 
-default.icinga.custom_plugins_dir = '/etc/icinga-plugins'
-default.icinga.custom_plugins_repo = 'git://github.com/dlobue/icinga-plugins.git'
+default.icinga.custom_plugins.dir = '/etc/icinga-plugins'
+default.icinga.custom_plugins.repo = 'git://github.com/dlobue/icinga-plugins.git'
+default.icinga.custom_plugins.revision = 'master'
 
 #hack to make sure that chef always generates hostgroups for the following traits
 default.icinga.hostgroup_traits = []
