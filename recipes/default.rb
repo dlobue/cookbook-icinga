@@ -6,8 +6,8 @@ package "icinga" do
     options "--install-recommends"
 end
 
-cookbook_file node.icinga.conf.htpasswd do
-    source "htpasswd.users"
+template node.icinga.conf.htpasswd do
+    source "htpasswd.users.erb"
     mode '0644'
 end
 
