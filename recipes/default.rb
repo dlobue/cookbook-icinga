@@ -14,20 +14,20 @@ end
 template node.icinga.conf.icinga do
     source "icinga.cfg.erb"
     mode "0644"
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 template node.icinga.conf.resource do
     source "resource.cfg.erb"
     mode "0644"
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 
 template node.icinga.conf.generated_services do
     source "generated_services.cfg.erb"
     mode "0644"
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 template node.icinga.conf.generated_servers do
@@ -37,45 +37,45 @@ template node.icinga.conf.generated_servers do
         :servers => fakesearch_all_nodes(:deployment => nil, :state => 'available', :fqdn => '*'),
         :hostgroups => Set.new(node.icinga.hostgroup_traits)
     )
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 template node.icinga.conf.contacts do
     source "contacts.cfg.erb"
     mode "0644"
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 file File.join(node.icinga.conf_dir, 'hostgroups_icinga.cfg') do
     action :delete
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 file File.join(node.icinga.conf_dir, 'services_icinga.cfg') do
     action :delete
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 file File.join(node.icinga.conf_dir, 'extinfo_icinga.cfg') do
     action :delete
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 file File.join(node.icinga.conf_dir, 'localhost_icinga.cfg') do
     action :delete
-    notifies :reload, 'service[icinga]' if node.mongodb.ismaster
+    notifies :reload, 'service[icinga]' #if node.mongodb.ismaster
 end
 
 service "icinga" do
     #action node.mongodb.ismaster ? [:start, :disable] : [:stop, :disable]
     action [:start, :disable]
-    supports :restart => true, :reload => true, :status => true
+    supports [:restart, :reload, :status]
 end
 
 service "apache2" do
     #action node.mongodb.ismaster ? [:start, :disable] : [:stop, :disable]
     action [:start, :disable]
-    supports :restart => true, :reload => true, :status => true
+    supports [:restart, :reload, :status]
 end
 
 
