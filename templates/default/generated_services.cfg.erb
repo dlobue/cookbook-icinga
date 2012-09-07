@@ -38,10 +38,10 @@ define service {
     check_command clio_check_process!1:!1:!chef-solo
 }
 
-define service {
-    use generated-service
-    hostgroup_name clio-servers
-    service_description clio backend service process
-    check_command clio_check_process!1:!1:!clio.store:app!<%=node.clio.port%>
-}
+#define service {
+#    use generated-service
+#    hostgroup_name clio-servers
+#    service_description clio backend service process
+#    check_command clio_check_process!1:!1:!clio.store:app!<%=node.clio.port%>
+#}
 
